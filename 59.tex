@@ -1,0 +1,51 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{soul}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\graphicspath{/home/black/Downloads}
+
+\lstset{
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	breaklines=true
+}
+
+\title{\vspace{-1.5cm}Project Eueler 59}
+\author{Kevin Black}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem Statement}
+
+Each character on a computer is assigned a unique code and the preferred standard is ASCII (American Standard Code for Information Interchange). For example, uppercase A = 65, asterisk (*) = 42, and lowercase k = 107.
+
+A modern encryption method is to take a text file, convert the bytes to ASCII, then XOR each byte with a given value, taken from a secret key. The advantage with the XOR function is that using the same encryption key on the cipher text, restores the plain text; for example, 65 XOR 42 = 107, then 107 XOR 42 = 65.
+
+For unbreakable encryption, the key is the same length as the plain text message, and the key is made up of random bytes. The user would keep the encrypted message and the encryption key in different locations, and without both ``halves", it is impossible to decrypt the message.
+
+Unfortunately, this method is impractical for most users, so the modified method is to use a password as a key. If the password is shorter than the message, which is likely, the key is repeated cyclically throughout the message. The balance for this method is using a sufficiently long password key for security, but short enough to be memorable.
+
+Your task has been made easy, as the encryption key consists of three lower case characters. Using cipher.txt (right click and `Save Link/Target As...'), a file containing the encrypted ASCII codes, and the knowledge that the plain text must contain common English words, decrypt the message and find the sum of the ASCII values in the original text.
+
+\section{Code}
+\lstinputlisting[language=Python]{59.py}
+
+\section{Rationale}
+
+Since the key is only 3 lowercase letters long, there are only $26^3 = 17576$ possible keys. Therefore, it is feasible to try decrypting the ciphertext with every single one and checking if the resulting text looks like readable English. 
+
+First is the function \verb!decrypt!, which takes some ciphertext and a key of arbitrary length, both in the form of a list of ASCII values. It computes the full key by repeating the short key as many times as necessary to cover the length of the ciphertext, and then XORs the full key with the ciphertext.
+
+I then read in the ciphertext from the input file as a list of ASCII values, and create a generator object \verb!keys! that will generate all possible keys that are a combination of 3 lowercase letters. For each key, I decrypt the ciphertext using that key and then check if all the ASCII values in the resulting plaintext are in the range 32 - 122, which covers most common letters and symbols. For any plaintext satisfying this criteria, I convert the ASCII values to a string and print that as well as the sum of all the ASCII values.
+
+In practice, this method printed 6 candidate plaintexts that satisfied the criteria. It was then trivial to see which one was comprehensible English, with the accompanying sum as the solution.
+\end{document}

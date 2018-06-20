@@ -1,0 +1,53 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{soul}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\graphicspath{/home/black/Downloads}
+
+\lstset{
+	basicstyle=\footnotesize\ttfamily,
+	frame=single,
+	breaklines=true
+}
+
+\title{\vspace{-1.5cm}Project Eueler 102}
+\author{Kevin Black}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem Statement}
+
+Three distinct points are plotted at random on a Cartesian plane, for which $-1000 \leq x, y \leq 1000$, such that a triangle is formed.
+
+Consider the following two triangles:
+
+\begin{center}
+A(-340,495), B(-153,-910), C(835,-947)
+
+X(-175,41), Y(-421,-714), Z(574,-645)
+\end{center}
+
+It can be verified that triangle ABC contains the origin, whereas triangle XYZ does not.
+
+Using triangles.txt (right click and `Save Link/Target As...'), a 27K text file containing the co-ordinates of one thousand ``random" triangles, find the number of triangles for which the interior contains the origin.
+
+NOTE: The first two examples in the file represent the triangles in the example given 
+
+\section{Code}
+\lstinputlisting[language=Python]{102.py}
+
+\section{Rationale}
+In order to verify that a triangle contains the origin, I utilize a well-known algorithm that uses cross products. Call the triangle ABC, and the origin O. The origin O is inside the triangle ABC if $AB \times AO$, $BC \times BO$, and $CA \times CO$ all have the same sign.
+
+First is the function \verb!cross!, which simply computes the sign of the cross product of two points and returns it as a boolean. Next is the function \verb!containsOrigin!, which takes a triangle (in the same format as the input file, a list of 6 integers), and computes the vectors AB, AO, BC, BO, CA, and CO. It then computes the signs of all the cross products in the above algorithm, and returns true if all the signs are the same. Finally, I read in the triangles from the input file, and print the count of all the triangles for which \verb!containsOrigin! returns true. 
+
+\end{document}
